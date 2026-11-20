@@ -1,27 +1,569 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="EtA0JdKSihNQXSKTLp57Ja5_nxcc8MU72aBdtQ5q4" />
-<title>Guendouze Securise Edu - Plateforme Educative Sécurisée El Tarf</title>
-<meta name="description" content="Guendouze Securise Edu est une plateforme éducative sécurisée pour El Tarf. Cours, ressources et éducation numérique sécurisée.">
-<meta name="keywords" content="Guendouze, Securise Edu, El Tarf, education, plateforme educative">
-<style>
-body{font-family:system-ui,sans-serif;background:#0f172a;color:white;text-align:center;padding:30px}
-.card{background:white;color:#0f172a;padding:25px;border-radius:16px;max-width:600px;margin:20px auto}
-h1{color:#38bdf8}
-.btn{background:#38bdf8;color:black;padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-block;margin-top:15px;font-weight:bold}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Cinema Studio | منصة السينما الذكية</title>
+  <meta name="description" content="منصة Smart Cinema Studio للأفلام الدينية والأشرطة القصيرة المنتجة بالذكاء الاصطناعي والمترجمة لعدة لغات." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b14;
+      --surface: #111827;
+      --surface-2: #1a2438;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #00d4ff;
+      --accent-2: #2563eb;
+      --green: #16a34a;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: radial-gradient(circle at top, #0f1f3d 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 34px 20px 28px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.14), rgba(37, 99, 235, 0.22));
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 800;
+    }
+
+    header p {
+      margin: 0 auto;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 22px 18px 50px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .search-input {
+      flex: 1 1 250px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-input:focus { border-color: var(--accent); }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-filter, .btn-add-toggle {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: 0.2s ease;
+    }
+
+    .btn-filter.active, .btn-filter:hover {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-add-toggle {
+      background: rgba(0, 212, 255, 0.12);
+      color: var(--accent);
+      border-color: rgba(0, 212, 255, 0.35);
+    }
+
+    .add-panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .add-panel.open { display: block; }
+
+    .add-panel h2 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .form-grid input, .form-grid select, .form-grid textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-grid textarea {
+      grid-column: 1 / -1;
+      resize: vertical;
+      min-height: 72px;
+    }
+
+    .btn-save {
+      margin-top: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-cover {
+      height: 155px;
+      background: linear-gradient(135deg, var(--surface-2), #0d1526);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      position: relative;
+    }
+
+    .tag-cat, .tag-dur {
+      position: absolute;
+      top: 11px;
+      background: rgba(7, 11, 20, 0.82);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .tag-cat { right: 11px; color: var(--accent); }
+    .tag-dur { left: 11px; color: #e2e8f0; }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .card-body h3 {
+      margin: 0;
+      font-size: 1.08rem;
+    }
+
+    .langs {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .card-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.89rem;
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-watch {
+      background: var(--accent);
+      color: #06101c;
+    }
+
+    .btn-wa {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 720px;
+      padding: 18px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .close-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+    }
+
+    .player-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .player-wrap iframe, .player-wrap video {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .modal-desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-<h1>Guendouze Securise Edu</h1>
-<p>Plateforme Educative Securisee - El Tarf</p>
-<div class="card">
-<h2>Bienvenue sur Guendouze Securise Edu</h2>
-<p>Plateforme éducative sécurisée dédiée à l'éducation numérique. Site opérationnel et sécurisé pour les étudiants d'El Tarf.</p>
-<p>Le site a ete deploye avec succes</p>
-<a class="btn" href="#">Commencer</a>
-</div>
+
+  <header>
+    <h1>🎬 Smart Cinema Studio</h1>
+    <p>منصة عرض ذكية للأفلام الدينية والأشرطة القصيرة المنتجة بالذكاء الاصطناعي والمترجمة إلى العربية والإنجليزية والفرنسية والصينية</p>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <input id="searchInput" class="search-input" type="search" placeholder="ابحث باسم الفيلم أو الوصف أو اللغة..." />
+      <div class="filters">
+        <button class="btn-filter active" data-cat="الكل">الكل</button>
+        <button class="btn-filter" data-cat="ديني وتاريخي">ديني وتاريخي</button>
+        <button class="btn-filter" data-cat="ذكاء اصطناعي">ذكاء اصطناعي</button>
+        <button class="btn-filter" data-cat="أشرطة قصيرة">أشرطة قصيرة</button>
+        <button class="btn-add-toggle" id="toggleAddBtn">+ إضافة فيلم</button>
+      </div>
+    </div>
+
+    <section class="add-panel" id="addPanel">
+      <h2>إضافة فيلم أو شريط جديد للمنصة</h2>
+      <form id="addForm">
+        <div class="form-grid">
+          <input type="text" id="fTitle" placeholder="عنوان الفيلم أو الشريط" required />
+          <select id="fCategory">
+            <option value="ديني وتاريخي">ديني وتاريخي</option>
+            <option value="ذكاء اصطناعي">ذكاء اصطناعي</option>
+            <option value="أشرطة قصيرة">أشرطة قصيرة</option>
+          </select>
+          <input type="text" id="fDuration" placeholder="المدة (مثال: 60 دقيقة أو 20 دقيقة)" value="20 دقيقة" required />
+          <input type="text" id="fLangs" placeholder="الترجمات (عربية، إنجليزية، فرنسية، صينية)" value="عربية • إنجليزية • فرنسية • صينية" required />
+          <input type="url" id="fUrl" placeholder="رابط YouTube أو رابط فيديو مباشر (اختياري)" />
+          <input type="text" id="fIcon" placeholder="أيقونة (مثال: 🕌 أو 🤖 أو 🎞️)" value="🎬" maxlength="4" />
+          <textarea id="fDesc" placeholder="وصف مختصر للعمل..." required></textarea>
+        </div>
+        <button type="submit" class="btn-save">حفظ وعرض في المنصة</button>
+      </form>
+    </section>
+
+    <section class="grid" id="moviesGrid"></section>
+  </main>
+
+  <div class="modal" id="videoModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <button class="close-btn" id="closeModal">إغلاق ✕</button>
+      </div>
+      <div class="player-wrap" id="playerWrap"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+    </div>
+  </div>
+
+  <script>
+    const defaultMovies = [
+      {
+        title: "نور الحكمة: قصص من التراث",
+        category: "ديني وتاريخي",
+        duration: "60 دقيقة",
+        langs: "عربية • إنجليزية • فرنسية • صينية",
+        icon: "🕌",
+        url: "",
+        desc: "عمل بصري يروي مواقف ملهمة في الصبر والعدل والأخلاق بأسلوب سردي حديث ومترجم لأربع لغات."
+      },
+      {
+        title: "رسالة عبر الزمن",
+        category: "أشرطة قصيرة",
+        duration: "3 دقائق",
+        langs: "عربية • صينية • إنجليزية",
+        icon: "⏳",
+        url: "",
+        desc: "شريط قصير مؤثر عن قيمة الوقت والقرارات الإنسانية المصيرية، مصمم للمشاركة السريعة عبر الهاتف."
+      },
+      {
+        title: "مدن المستقبل 2035",
+        category: "ذكاء اصطناعي",
+        duration: "20 دقيقة",
+        langs: "عربية • إنجليزية • فرنسية • صينية",
+        icon: "🤖",
+        url: "",
+        desc: "فيلم مولّد بتقنيات الذكاء الاصطناعي يستشرف تطور العلوم والعمارة الذكية بلغة بصرية سينمائية."
+      },
+      {
+        title: "أثر الكلمة الطيبة",
+        category: "ديني وتاريخي",
+        duration: "45 دقيقة",
+        langs: "عربية • فرنسية • إنجليزية",
+        icon: "📜",
+        url: "",
+        desc: "سرد درامي حديث يبرز أثر الكلمة الصادقة والتسامح في بناء المجتمعات."
+      }
+    ];
+
+    const STORAGE_KEY = "smart_cinema_movies_v1";
+    let movies = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultMovies;
+    let currentCategory = "الكل";
+
+    const grid = document.getElementById("moviesGrid");
+    const searchInput = document.getElementById("searchInput");
+    const addPanel = document.getElementById("addPanel");
+    const modal = document.getElementById("videoModal");
+    const playerWrap = document.getElementById("playerWrap");
+
+    function getEmbedUrl(url) {
+      if (!url) return null;
+      const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if (ytMatch) {
+        return { type: "iframe", src: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
+      }
+      if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) {
+        return { type: "video", src: url };
+      }
+      return { type: "link", src: url };
+    }
+
+    function renderMovies() {
+      const q = searchInput.value.trim().toLowerCase();
+      const list = movies.filter((m) => {
+        const matchCat = currentCategory === "الكل" || m.category === currentCategory;
+        const matchSearch =
+          m.title.toLowerCase().includes(q) ||
+          m.desc.toLowerCase().includes(q) ||
+          m.langs.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      if (!list.length) {
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#94a3b8;">لا توجد أعمال مطابقة لبحثك حالياً.</p>`;
+        return;
+      }
+
+      grid.innerHTML = list.map((m, idx) => {
+        const shareText = encodeURIComponent(`شاهد "${m.title}" (${m.duration}) على منصة Smart Cinema Studio:\n${window.location.href}`);
+        return `
+          <article class="card">
+            <div class="card-cover">
+              <span class="tag-cat">${m.category}</span>
+              <span class="tag-dur">${m.duration}</span>
+              <span>${m.icon || "🎬"}</span>
+            </div>
+            <div class="card-body">
+              <h3>${m.title}</h3>
+              <div class="langs">🌐 ${m.langs}</div>
+              <p>${m.desc}</p>
+              <div class="card-actions">
+                <button class="btn btn-watch" onclick="openMovie(${idx})">▶ مشاهدة</button>
+                <a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/?text=${shareText}">واتساب</a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openMovie(index) {
+      const q = searchInput.value.trim().toLowerCase();
+      const filtered = movies.filter((m) => {
+        const matchCat = currentCategory === "الكل" || m.category === currentCategory;
+        const matchSearch =
+          m.title.toLowerCase().includes(q) ||
+          m.desc.toLowerCase().includes(q) ||
+          m.langs.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+      const movie = filtered[index];
+      if (!movie) return;
+
+      document.getElementById("modalTitle").textContent = `${movie.title} (${movie.duration})`;
+      document.getElementById("modalDesc").textContent = movie.desc;
+
+      const media = getEmbedUrl(movie.url);
+      if (!media) {
+        playerWrap.innerHTML = `<div style="height:100%;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;color:#94a3b8;">لم يُضف رابط فيديو لهذا العمل بعد. يمكنك إضافته من زر "+ إضافة فيلم".</div>`;
+      } else if (media.type === "iframe") {
+        playerWrap.innerHTML = `<iframe src="${media.src}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;
+      } else if (media.type === "video") {
+        playerWrap.innerHTML = `<video src="${media.src}" controls autoplay playsinline></video>`;
+      } else {
+        playerWrap.innerHTML = `<div style="height:100%;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;padding:20px;text-align:center;"><p style="margin:0;color:#cbd5e1;">هذا الرابط خارجي، اضغط لفتحه مباشرة:</p><a href="${media.src}" target="_blank" rel="noopener" class="btn btn-watch" style="max-width:220px;">فتح رابط المشاهدة</a></div>`;
+      }
+
+      modal.classList.add("open");
+    }
+
+    function closeMovieModal() {
+      modal.classList.remove("open");
+      playerWrap.innerHTML = "";
+    }
+
+    document.getElementById("closeModal").addEventListener("click", closeMovieModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeMovieModal();
+    });
+
+    document.getElementById("toggleAddBtn").addEventListener("click", () => {
+      addPanel.classList.toggle("open");
+    });
+
+    document.getElementById("addForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newItem = {
+        title: document.getElementById("fTitle").value.trim(),
+        category: document.getElementById("fCategory").value,
+        duration: document.getElementById("fDuration").value.trim(),
+        langs: document.getElementById("fLangs").value.trim(),
+        url: document.getElementById("fUrl").value.trim(),
+        icon: document.getElementById("fIcon").value.trim() || "🎬",
+        desc: document.getElementById("fDesc").value.trim()
+      };
+      movies.unshift(newItem);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(movies));
+      e.target.reset();
+      addPanel.classList.remove("open");
+      renderMovies();
+    });
+
+    searchInput.addEventListener("input", renderMovies);
+
+    document.querySelectorAll(".btn-filter").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".btn-filter").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentCategory = btn.dataset.cat;
+        renderMovies();
+      });
+    });
+
+    renderMovies();
+  </script>
 </body>
 </html>
